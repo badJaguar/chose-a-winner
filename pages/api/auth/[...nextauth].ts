@@ -22,20 +22,18 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('signIn', user, account, profile, email, credentials);
-
-      return true;
-    },
-    async session({ session, user, token }) {
-      console.log(session, user, token);
-
-      return session;
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      console.log(token, user, account, profile, isNewUser);
-
+    async jwt({ token, account }) {
+      if (account) {
+        token = Object.assign({}, token, { access_token: account.access_token });
+      }
       return token;
+    },
+    async session({ session, token }) {
+      if (session) {
+        session = Object.assign({}, session, { access_token: token.access_token });
+        console.log(session);
+      }
+      return session;
     }
   },
 };

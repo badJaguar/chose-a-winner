@@ -1,20 +1,13 @@
 import Layout from "../../../components/layout";
-import { getCsrfToken, getProviders,  useSession } from "next-auth/react"
+import {  getProviders, useSession } from "next-auth/react"
 import { useEffect } from "react";
 
 export default function Page() {
-
-
-useEffect(() => {
-  getProviders().then(res => {
-    console.log(res);
-  })
-}, [])
+const {data, status} = useSession()
 
   return (
     <Layout>
-        {/* <pre>{`${data?.user}`}</pre>
-        <pre>{session}</pre> */}
+        <pre>{JSON.stringify(data?.user.token, null, 2)}</pre>
     </Layout>
   )
 }
