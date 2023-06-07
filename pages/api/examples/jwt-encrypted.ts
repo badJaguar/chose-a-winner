@@ -3,7 +3,7 @@ import { getToken } from "next-auth/jwt";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const secret = process.env.FACEBOOK_SECRET;
+const secret = process.env.INSTAGRAM_CLIENT_SECRET;
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,8 +11,7 @@ export default async function handler(
 ) {
   // If you don't have the NEXTAUTH_SECRET environment variable set,
   // you will have to pass your secret as `secret` to `getToken`
-  const token = await getToken({ req });
-  // const csrfToken = await getCsrfToken({ req });
-  console.log('TOKEN', req.body);
+  const token = await getToken({ req, secret, raw: true });
+
   res.send(JSON.stringify(token, null, 2));
 }
