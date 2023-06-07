@@ -10,7 +10,6 @@ export default function ProtectedPage() {
   // Fetch content from protected route
   useEffect(() => {
     const fetchData = async () => {
-      debugger
       const res = await fetch("/api/examples/protected")
       const json = await res.json()
       if (json.content) {

@@ -7,7 +7,7 @@ import NextAuth, { DefaultSession } from "next-auth";
 declare module "next-auth/jwt" {
   interface JWT {
     /** The user's role. */
-    userRole?: "admin";
+    access_token?: string;
   }
 }
 
@@ -19,7 +19,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       /** Oauth access token */
-      token?: accessToken;
     } & DefaultSession["user"];
+    access_token?: accessToken;
   }
 }
