@@ -26,7 +26,7 @@ export default function Header() {
     if (!open) return null;
 
     return (
-      <div ref={clickRef} className="mt-1 fixed z-10 sm:right-4 md:right-auto bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+      <div ref={clickRef} className="mt-1 fixed z-10 right-4 md:right-auto bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
         <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
           <div>Signed in as</div>
           <div className="font-medium truncate">{name}</div>
@@ -67,7 +67,7 @@ export default function Header() {
   return (
     <header className='shadow-md border-gray-200 px-4 lg:px-6 py-2 bg-white ml-4 mr-4 mt-2 rounded-lg'>
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-        <span className="self-center text-3xl font-semibold whitespace-nowrap text-primary-900">Flowbite</span>
+        <span className="self-center text-3xl font-semibold whitespace-nowrap text-primary-900">Randomista</span>
         <div className="flex items-center lg:order-2">
           {!session && (
             <a

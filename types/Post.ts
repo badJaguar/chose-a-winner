@@ -44,9 +44,10 @@ export interface User {
   username: string;
   full_name: string;
   profile_pic_url: string;
-  profile_pic_url_hd: any;
   is_private: boolean;
-  stories: any[];
+  profile_pic_url_hd?: string;
+  is_verified?: boolean;
+  stories?: any[];
 }
 
 export interface ClipsMetadata { }
