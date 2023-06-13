@@ -8,6 +8,9 @@ const MuiButton = {
       borderColor: 'rgb(192, 192, 192)',
       paddingLeft: defaultTheme.spacing(4),
       paddingRight: defaultTheme.spacing(4),
+      '&.Mui-disabled': {
+        backgroundColor: `${defaultTheme.palette.action.disabled} !important`,
+      }
     },
     containedSuccess: {
       backgroundColor: defaultTheme.palette.secondary.dark,

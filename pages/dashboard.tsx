@@ -13,13 +13,10 @@ import noImage from '../public/images/no-img.png';
 import ModalPost from "../components/modal-post";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 
 const chips = "text-sm md:text-lg inline-block bg-gray-200 rounded-full px-3 py-1 font-semibold text-gray-700 mr-2 mb-2";
-
-interface MePageProps {
-  posts: Post[];
-}
 
 const posts = [
   {
@@ -220,24 +217,25 @@ const posts = [
 
 export default function Dashboard() {
   const [open, setOpen] = useState(false);
+  // TODO: Change to true
+  const [loading, setLoading] = useState(false);
   const [post, setPost] = useState<Post | undefined>();
 
   const { data: session } = useSession();
-  const [content, setContent] = useState();
+  const [content, setContent] = useState<Post[]>(posts as Post[]);
 
-  // Fetch content from protected route
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("/api/examples/posts");
-      const json = await res.json();
-
-      if (json.content) {
-        setContent(json.content);
-
-      }
-    };
-    fetchData();
-  }, [session]);
+  // // Fetch content from protected route
+  // useIsomorphicLayoutEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await fetch("/api/examples/posts");
+  //     const json = await res.json();
+  //     setLoading(false);
+  //     if (json) {
+  //       setContent(json);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [session]);
 
 
   const openClickHandle = (item: Post) => {
@@ -250,11 +248,28 @@ export default function Dashboard() {
     setPost(undefined);
   };
 
+
+  // if (loading) {
+  //   return (
+  //     <Layout>
+  //       <Typography variant="h2" component="h2">Wait!</Typography>
+  //     </Layout>
+  //   );
+  // }
+
+  if (!session && !loading) {
+    return (
+      <Layout>
+        <Typography variant="h2" component="h2">Please login!</Typography>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <Container maxWidth="md" className="grid grid-cols-2 lg:grid-cols-3 gap-2 ">
         {
-          !!posts.length && posts.map(item => (
+          !!content.length && content.map(item => (
             <div
               onClick={() => openClickHandle(item as Post)}
               key={item.id}
@@ -299,37 +314,3 @@ export default function Dashboard() {
     </Layout>
   );
 }
-
-// export async function getServerSideProps(context: GetServerSidePropsContext) {
-//   const session = await getServerSession(context.req, context.res, authOptions);
-//   const { sessionId, userId } = session ?? {};
-
-//   try {
-//     const posts = await getAllMedia(sessionId!, userId!);
-
-//     if (!Array.isArray(posts)) {
-//       console.log('REQUEST: ', posts);
-//       //TODO: Fix error hanling
-//       // REQUEST:  {
-//       //   detail: 'Please wait a few minutes before you try again.',
-//       //   exc_type: 'ClientError'
-//       // }
-//       return {
-//         redirect: {
-//           destination: '/',
-//           permanent: false,
-//         },
-//       };
-//     }
-
-//     return { props: { posts } };
-//   } catch (error) {
-//     signOut();
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       },
-//     };
-//   }
-// }
