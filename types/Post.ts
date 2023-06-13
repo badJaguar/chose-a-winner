@@ -6,7 +6,7 @@ export interface Post {
   media_type: number;
   product_type: string;
   thumbnail_url: string;
-  location?: Location;
+  location: Location;
   user: User;
   comment_count: number;
   like_count: number;
@@ -45,7 +45,7 @@ export interface User {
   full_name: string;
   profile_pic_url: string;
   is_private: boolean;
-  profile_pic_url_hd?: string;
+  profile_pic_url_hd: string | null;
   is_verified?: boolean;
   stories?: any[];
 }

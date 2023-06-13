@@ -13,9 +13,9 @@ export default function Modal(props: ModalProps) {
   if (!open) return null;
 
   return (
-    <div aria-hidden="true" className="fixed flex top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-full bg-black bg-opacity-60">
-      <div className="relative rounded-lg w-full max-w-4xl max-h-full m-auto ring-4 ring-primary-500">
-        <div className="relative bg-white rounded-lg shadow">
+    <div aria-hidden="true" className="fixed flex top-0 left-0 right-0 z-50 w-full p-4 overflow-hidden overflow-y-auto md:inset-0 h-full bg-black bg-opacity-60">
+      <div className="relative rounded-lg w-full max-w-4xl h-full m-auto ring-4 ring-primary-500 overflow-hidden">
+        <div className="relative bg-white rounded-lg shadow overflow-auto h-full">
           <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
             <h3 className="text-xl font-bold text-gray-900">
               <Caption overflow="none" caption={title} />

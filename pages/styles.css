@@ -20,7 +20,7 @@ button {
 }
 
 .modal-grid {
-  display: grid;
+  display: inline-block;
   gap: 12px;
 }
 
@@ -34,7 +34,13 @@ button {
 
 .comment-grid-layout {
   display: grid;
-  grid-template-columns: 60px 1fr;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+}
+
+.video-controls-grid-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
   gap: 1rem;
 }
 

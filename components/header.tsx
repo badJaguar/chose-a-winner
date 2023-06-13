@@ -67,16 +67,14 @@ export default function Header() {
             onClick={(e) => {
               e.preventDefault();
               handleClose();
-              signOut();
               router.push('');
+              signOut();
             }}
           >Logout</MenuItem>
         </Menu>
       </>
     );
   }
-
-  if (loading) return <CircularProgress color='success' size={80} />;
 
   return (
     <header className='shadow-md border-gray-200 px-4 lg:px-6 py-2 bg-white ml-4 mr-4 mt-2 rounded-lg'>
@@ -91,7 +89,8 @@ export default function Header() {
         >Randomista</Typography>
 
         <div className="flex items-center lg:order-2">
-          {!session && (
+          {loading && <CircularProgress color='success' size={64} />}
+          {(!session && !loading) && (
             <a
               className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-md px-4 lg:px-8 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
               href={`/api/auth/signin`}
@@ -126,7 +125,8 @@ export default function Header() {
                     <AccountCircleIcon
                       sx={{ width: 64, height: 64, color: 'gray' }}
                       className="cursor-pointer rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-                    />)}
+                    />
+                  )}
               </div>
             </Box>
           )}

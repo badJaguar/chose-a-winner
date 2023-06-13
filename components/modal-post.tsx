@@ -5,7 +5,8 @@ import { Post, User } from "../types/Post";
 import noImage from '../public/images/no-img.png';
 import { Comment, CommentUser } from "../types/Comment";
 import Caption from "./caption";
-import { Button } from '@mui/material';
+import { Button, useMediaQuery, useTheme } from '@mui/material';
+import VideoRecorder from './video-recorder';
 
 function filterUniqueComments(comments: Comment[]): Comment[] {
   const uniqueUsers: CommentUser[] = [];
@@ -140,7 +141,8 @@ const likers: User[] = [
     "full_name": "Строительство домов|ремонт|отделка стен|укладка плитки",
     "profile_pic_url": "https://scontent-lga3-1.cdninstagram.com/v/t51.2885-19/328270913_1860740097630111_2535643601564378967_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent-lga3-1.cdninstagram.com&_nc_cat=103&_nc_ohc=pfjTpY2jG0YAX_XdmbI&edm=APwHDrQBAAAA&ccb=7-5&oh=00_AfBUvTpCWg325g8190WSLDDmA5QObex2_rDdkl2apRq71Q&oe=648C32F7&_nc_sid=687400",
     "is_private": false,
-    "is_verified": false
+    "is_verified": false,
+    profile_pic_url_hd: null,
   },
   {
     "pk": "60048238518",
@@ -148,7 +150,9 @@ const likers: User[] = [
     "full_name": "Alexander Ataakgayev",
     "profile_pic_url": "https://scontent-lga3-2.cdninstagram.com/v/t51.2885-19/351372613_211724935027197_5147074641586896797_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent-lga3-2.cdninstagram.com&_nc_cat=109&_nc_ohc=ASPyLs6sglkAX8iRzmC&edm=APwHDrQBAAAA&ccb=7-5&oh=00_AfCqdQMF4z44L6od4CH-Cn1PNuazyE8x2QY1HzQG2srs2A&oe=648B3B5E&_nc_sid=687400",
     "is_private": false,
-    "is_verified": false
+    "is_verified": false,
+    profile_pic_url_hd: null,
+
   },
   {
     "pk": "1571167792",
@@ -156,7 +160,9 @@ const likers: User[] = [
     "full_name": "Anastasiya",
     "profile_pic_url": "https://scontent-lga3-2.cdninstagram.com/v/t51.2885-19/307852570_494330512207901_4283287669192377931_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent-lga3-2.cdninstagram.com&_nc_cat=105&_nc_ohc=JnS7t--moL0AX-yFeFA&edm=APwHDrQBAAAA&ccb=7-5&oh=00_AfA6bK7SbblEW_w8puvVJWv0Qk-Q2KJzXneIwwkKZjfjcQ&oe=648BECA4&_nc_sid=687400",
     "is_private": false,
-    "is_verified": false
+    "is_verified": false,
+    profile_pic_url_hd: null,
+
   }
 ];
 
@@ -164,6 +170,11 @@ const ModalPost = ({ post, onClose }: { post: Post; onClose: VoidFunction; }) =>
   const { id, pk, thumbnail_url } = post ?? {};
 
   const [winner, setWinner] = useState<CommentUser | null>(null);
+
+  const theme = useTheme();
+  const mediaQuery = useMediaQuery(theme.breakpoints.up('md'));
+
+
 
   // const { data: comments, isLoading: commentsLoading } = useSWR<Comment[][]>(`${url}/media/comments/chunk?id=${pk}`, fetcher);
   // const { data: likers, isLoading: likersLoading } = useSWR<User[]>(`${url}/media/likers?id=${pk}`, fetcher);
@@ -204,7 +215,7 @@ const ModalPost = ({ post, onClose }: { post: Post; onClose: VoidFunction; }) =>
   // }
 
   return (
-    <div className="p-6 space-y-6 modal-grid md:modal-grid-lg">
+    <div style={{ minHeight: 'calc(100% - 80px)' }} className="p-6 space-y-6 modal-grid md:modal-grid-lg">
       <Image
         quality={100}
         className="rounded-md"
@@ -216,31 +227,35 @@ const ModalPost = ({ post, onClose }: { post: Post; onClose: VoidFunction; }) =>
       <div className="overflow-auto max-h-60 divide-y">
         {
           filteredComments && filteredComments.map(comment => (
-            <div key={comment.pk} className="grid comment-grid-layout px-4 py-2 md:py-4 first:pt-0">
+            <div key={comment.pk} className="grid comment-grid-layout px-0 md:px-4 py-2 md:py-4 first:pt-0">
               <Image
                 quality={10}
-                className="w-16 h-16 rounded-full"
+                className="md:w-16 md:h-16 w-8 h-8 rounded-full"
                 width={30}
                 height={30}
-                src={thumbnail_url ?? noImage.src}
+                src={comment.user.profile_pic_url ?? noImage.src}
                 alt={comment.user.username}
               />
               <div>
-                <p className="font-semibold text-lg">{comment.user.username}</p>
+                <p className="font-semibold text-sm md:text-lg">{comment.user.username}</p>
                 <Caption overflow="none" caption={comment.text} />
               </div>
             </div>
           ))
         }
       </div>
-      <div className="flex items-center winner-action p-6 space-x-2 border-t">
+      <VideoRecorder />
+      <div className={`flex flex-col md:flex-row items-center winner-action p-6 md:space-x-2 border-t`}>
         <Button
           variant='contained'
           color='info'
+          fullWidth={!mediaQuery}
           onClick={selectWinnerHandle}
         >Select a Winner</Button>
         <Button
+          className='mt-2 md:mt-0'
           onClick={onClose}
+          fullWidth={!mediaQuery}
           variant="outlined"
         >Cancel</Button>
         <p>{winner?.username}</p>
