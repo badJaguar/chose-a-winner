@@ -5,6 +5,7 @@ import { Post, User } from "../types/Post";
 import noImage from '../public/images/no-img.png';
 import { Comment, CommentUser } from "../types/Comment";
 import Caption from "./caption";
+import { Button } from '@mui/material';
 
 function filterUniqueComments(comments: Comment[]): Comment[] {
   const uniqueUsers: CommentUser[] = [];
@@ -215,7 +216,7 @@ const ModalPost = ({ post, onClose }: { post: Post; onClose: VoidFunction; }) =>
       <div className="overflow-auto max-h-60 divide-y">
         {
           filteredComments && filteredComments.map(comment => (
-            <div key={comment.pk} className="grid comment-grid-layout px-4 py-4 first:pt-0">
+            <div key={comment.pk} className="grid comment-grid-layout px-4 py-2 md:py-4 first:pt-0">
               <Image
                 quality={10}
                 className="w-16 h-16 rounded-full"
@@ -223,9 +224,8 @@ const ModalPost = ({ post, onClose }: { post: Post; onClose: VoidFunction; }) =>
                 height={30}
                 src={thumbnail_url ?? noImage.src}
                 alt={comment.user.username}
-
               />
-              <div >
+              <div>
                 <p className="font-semibold text-lg">{comment.user.username}</p>
                 <Caption overflow="none" caption={comment.text} />
               </div>
@@ -233,13 +233,16 @@ const ModalPost = ({ post, onClose }: { post: Post; onClose: VoidFunction; }) =>
           ))
         }
       </div>
-      <div className="flex items-center winner-action p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-        <button
-          type="button"
-          className="ripple text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      <div className="flex items-center winner-action p-6 space-x-2 border-t">
+        <Button
+          variant='contained'
+          color='info'
           onClick={selectWinnerHandle}
-        >Select a Winner</button>
-        <button onClick={onClose} type="button" className="text-gray-500 bg-white hover:bg-gray-100 focus:outline-none rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
+        >Select a Winner</Button>
+        <Button
+          onClick={onClose}
+          variant="outlined"
+        >Cancel</Button>
         <p>{winner?.username}</p>
       </div>
     </div>

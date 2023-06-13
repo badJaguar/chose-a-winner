@@ -17,6 +17,7 @@ export default function ApiExamplePage() {
       <iframe src="/api/examples/jwt" />
       <p>/api/examples/jwt-encrypted</p>
       <iframe width={600} height={300} src="/api/examples/jwt-encrypted" />
+      <iframe width={600} height={300} src="/api/examples/posts" />
     </Layout>
-  )
+  );
 }

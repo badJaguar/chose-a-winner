@@ -1,20 +1,28 @@
-import { MouseEvent, useState, useRef } from 'react';
-import Link from "next/link";
+import { MouseEvent, useState } from 'react';
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useOnClickOutside } from '../hooks/useClickOutside';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Box, Button, CircularProgress, Container, Divider, Menu, MenuItem, Typography } from '@mui/material';
+import Link from '../mui/Link';
+
 export default function Header() {
   const { data: session, status } = useSession();
-
-  const clickRef = useRef(null);
-  const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const { user } = session ?? {};
   const { name, image } = user ?? {};
   const loading = status === "loading";
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const openMenuClickHandle = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
 
   function signInHandle(e: MouseEvent<HTMLAnchorElement>) {
@@ -26,48 +34,62 @@ export default function Header() {
     if (!open) return null;
 
     return (
-      <div ref={clickRef} className="mt-1 fixed z-10 right-4 md:right-auto bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-        <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-          <div>Signed in as</div>
-          <div className="font-medium truncate">{name}</div>
-        </div>
-        <nav>
-          <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-            <li>
-              <Link href="/" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Home</Link>
-            </li>
-            <li>
-              <Link href="/dashboard" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</Link>
-            </li>
-          </ul>
-          <div className="py-1">
-            <a
-              href={`/api/auth/signout`}
-              onClick={(e) => {
-                e.preventDefault();
-                signOut();
-                router.push('');
-              }}
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-            >Sign out</a>
-          </div>
-        </nav>
-      </div>
+      <>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <Container>
+            <Typography component="p">Signed in as</Typography>
+            <Typography className="font-medium truncate" component="p">{name}</Typography>
+          </Container>
+          <Divider className='pt-1' />
+          <Box className="md:hidden">
+            <MenuItem
+              LinkComponent={Link}
+              onClick={handleClose}
+            >
+              <Link href="/dashboard" className='text-gray-800'>Dashboard</Link>
+            </MenuItem>
+            <MenuItem
+              onClick={handleClose}
+            >
+              <Link href="/" className='text-gray-800'>Home</Link>
+            </MenuItem>
+          </Box>
+          <MenuItem
+            LinkComponent="a"
+            href={`/api/auth/signout`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleClose();
+              signOut();
+              router.push('');
+            }}
+          >Logout</MenuItem>
+        </Menu>
+      </>
     );
   }
 
-  function openMenuClickHandle() {
-    setOpen(!open);
-  }
-
-  useOnClickOutside(clickRef, () => setOpen(false));
-
-  if (loading) return null;
+  if (loading) return <CircularProgress color='success' size={80} />;
 
   return (
     <header className='shadow-md border-gray-200 px-4 lg:px-6 py-2 bg-white ml-4 mr-4 mt-2 rounded-lg'>
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-        <span className="self-center text-3xl font-semibold whitespace-nowrap text-primary-900">Randomista</span>
+        <Typography
+          component={Link}
+          href="/asas"
+          variant='h4'
+          fontFamily="monospace"
+          fontWeight="600"
+          className='text-primary-500 cursor-pointer no-underline'
+        >Randomista</Typography>
+
         <div className="flex items-center lg:order-2">
           {!session && (
             <a
@@ -79,31 +101,36 @@ export default function Header() {
             </a>
           )}
           {session?.user && (
-            <>
-              {session?.user && (
-                <span className="flex mx-auto max-w-screen-xl">
-                  <div className="mr-4 mt-1" onClick={openMenuClickHandle}>
-                    {image
-                      ? (
-                        <Image
-                          width={68}
-                          height={68}
-                          className="w-16 h-16 p-1 cursor-pointer rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-                          src={image}
-                          alt="User dropdown"
-                        />
-                      ) : (
-                        <AccountCircleIcon
-                          sx={{ width: 64, height: 64, color: 'gray' }}
-                          className="cursor-pointer rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-                        />)}
-
-                    {avatarMenu()}
-                  </div>
-                </span>
-              )}
-            </>
+            <Box className="md:flex justify-center gap-2 pr-8 hidden">
+              <Button LinkComponent={Link} href="/" variant='text' className='text-primary-500'>Home</Button>
+              <Button LinkComponent={Link} href="/dashboard" variant='text' className='text-primary-500'>Dashboard</Button>
+            </Box>
           )}
+
+          {session?.user && (
+            <Box
+              onClick={openMenuClickHandle}
+              className="flex mx-auto max-w-screen-xl"
+            >
+              <div className="mr-4 mt-1">
+                {image
+                  ? (
+                    <Image
+                      width={68}
+                      height={68}
+                      className="w-16 h-16 p-1 cursor-pointer rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+                      src={image}
+                      alt="User dropdown"
+                    />
+                  ) : (
+                    <AccountCircleIcon
+                      sx={{ width: 64, height: 64, color: 'gray' }}
+                      className="cursor-pointer rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+                    />)}
+              </div>
+            </Box>
+          )}
+          {avatarMenu()}
         </div>
       </div>
     </header>

@@ -23,6 +23,8 @@ declare module "next-auth" {
       /** Oauth access token */
     } & DefaultSession["user"];
     access_token?: accessToken;
+    sessionId?: string;
+    userId?: string;
   }
 
   interface User {

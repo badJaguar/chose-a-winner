@@ -11,6 +11,7 @@ export async function getAllMedia(sessionid: string, userId: string, amount = 50
     },
     body: `sessionid=${sessionid}&user_id=${userId}&amount=${amount}`
   });
+  const result = await posts.json();
 
-  return await posts.json();
+  return result;
 }
