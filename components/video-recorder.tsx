@@ -7,7 +7,10 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useTheme } from '@mui/material/styles';
 
+
 export default function VideoRecorder() {
+  const modal = document?.getElementById('modal-winner')!;
+
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [isRecording, setIsRecording] = useState<boolean>(false);
 
@@ -22,6 +25,7 @@ export default function VideoRecorder() {
         video: true,
         audio: false,
       });
+
       const mediaRecorder = new MediaRecorder(mediaStream);
       const chunks: Blob[] = [];
 
@@ -33,13 +37,14 @@ export default function VideoRecorder() {
         const blob = new Blob(chunks, { type: 'video/webm' });
         const url = URL.createObjectURL(blob);
         setVideoSrc(url);
-        debugger;
+
         mediaStream.getTracks().forEach(track => track.stop());
       };
 
       mediaRecorderRef.current = mediaRecorder;
       setIsRecording(true);
       mediaRecorder.start();
+      modal.classList.add('yellow-frame');
     } catch (error) {
       console.error('Error recording screen:', error);
     }
@@ -47,6 +52,7 @@ export default function VideoRecorder() {
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
+      modal.classList.remove('yellow-frame');
       mediaRecorderRef.current.stop();
       setIsRecording(false);
     }
@@ -64,6 +70,8 @@ export default function VideoRecorder() {
       link.click();
     }
   };
+
+  mediaRecorderRef.current?.addEventListener('stop', stopRecording);
 
   return (
     <div className={`${mediaQuery ? 'video-controls-grid-layout' : undefined} space-x-2 border-t pt-6`}
