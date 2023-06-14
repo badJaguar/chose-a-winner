@@ -79,14 +79,22 @@ export default function Header() {
   return (
     <header className='shadow-md border-gray-200 px-4 lg:px-6 py-2 bg-white ml-4 mr-4 mt-2 rounded-lg'>
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-        <Typography
-          component={Link}
-          href="/asas"
-          variant='h4'
-          fontFamily="monospace"
-          fontWeight="600"
-          className='text-primary-500 cursor-pointer no-underline'
-        >Randomista</Typography>
+        {router.pathname === '/'
+          ? <Typography
+            variant='h4'
+            fontFamily="monospace"
+            fontWeight="600"
+            className='text-primary-500 cursor-pointer no-underline'
+          >Randomista</Typography>
+          :
+          <Typography
+            component={Link}
+            href="/"
+            variant='h4'
+            fontFamily="monospace"
+            fontWeight="600"
+            className='text-primary-500 cursor-pointer no-underline'
+          >Randomista</Typography>}
 
         <div className="flex items-center lg:order-2">
           {loading && <CircularProgress color='success' size={64} />}

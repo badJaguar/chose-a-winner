@@ -1,9 +1,10 @@
 import NextAuth, { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import InstagramProvider from "next-auth/providers/instagram";
+// import InstagramProvider from "next-auth/providers/instagram";
 import { InstagramUser } from "../../../types/InstagramUser";
 
 const url = process.env.NEXT_API_URL;
+process.env.NEXTAUTH_SECRET;
 
 async function getSessionId(credentials: Record<"username" | "password", string> | undefined): Promise<string> {
   const sessionId = await fetch(`${url}/auth/login`, {
@@ -37,44 +38,62 @@ async function getUserInfoByUsername(sessionId: string, userName: string): Promi
 export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
-    InstagramProvider({
-      clientId: process.env.INSTAGRAM_CLIENT_ID,
-      clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-    }),
+    //   // InstagramProvider({
+    //   //   clientId: process.env.INSTAGRAM_CLIENT_ID,
+    //   //   clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+    //   // }),
+    //   CredentialsProvider({
+    //     type: "credentials",
+    //     // The name to display on the sign in form (e.g. "Sign in with...")
+    //     name: "Credentials",
+    //     // `credentials` is used to generate a form on the sign in page.
+    //     // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+    //     // e.g. domain, username, password, 2FA token, etc.
+    //     // You can pass any HTML attribute to the <input> tag through the object.
+    //     credentials: {
+    //       username: { label: "Username", type: "text", placeholder: "jsmith" },
+    //       password: { label: "Password", type: "password" },
+    //     },
+    //     async authorize(credentials) {
+    //       const sessionId = await getSessionId(credentials);
+    //       const user = await getUserInfoByUsername(sessionId, credentials?.username!);
+
+    //       // const defaultUser: User = {
+    //       //   id: user.pk,
+    //       //   email: user.public_email,
+    //       //   image: user.profile_pic_url,
+    //       //   name: user.username,
+    //       // };
+    //       const defaultUser: User = {
+    //         id: user.pk,
+    //         email: user.public_email,
+    //         image: user.profile_pic_url,
+    //         name: user.username,
+    //       };
+
+    //       if (defaultUser && sessionId) {
+    //         return { ...defaultUser, sessionId };
+    //       } else {
+    //         return null;
+    //       }
+    //     }
+    //   })
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
-      name: "Credentials",
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
+      id: "domain-login",
+      name: "Domain Account",
+      async authorize(credentials, req) {
+        const user = {
+          /* add function to get user */
+        };
+        return user;
+      },
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        username: { label: "Username", type: "text ", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
-        // Add logic here to look up the user from the credentials supplied
-        const sessionId = await getSessionId(credentials);
-        const user = await getUserInfoByUsername(sessionId, credentials?.username!);
-
-        const defaultUser: User = {
-          id: user.pk,
-          email: user.public_email,
-          image: user.profile_pic_url,
-          name: user.username,
-        };
-
-        if (defaultUser && sessionId) {
-          // Any object returned will be saved in `user` property of the JWT
-          return { ...defaultUser, sessionId };
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        }
-      }
-    })
+    }),
   ],
+
   callbacks: {
     async jwt({ token, account, user }) {
       if (account) {
