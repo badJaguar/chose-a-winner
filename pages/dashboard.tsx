@@ -13,7 +13,7 @@ import noImage from '../public/images/no-img.png';
 import ModalPost from "../components/modal-post";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { Container, Typography } from "@mui/material";
+import { Container, Typography, Button } from "@mui/material";
 import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 
 const chips = "text-sm md:text-lg inline-block bg-gray-200 rounded-full px-3 py-1 font-semibold text-gray-700 mr-2 mb-2";

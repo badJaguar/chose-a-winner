@@ -7,7 +7,6 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useTheme } from '@mui/material/styles';
 
-
 export default function VideoRecorder() {
   const modal = document?.getElementById('modal-winner')!;
 
@@ -71,6 +70,16 @@ export default function VideoRecorder() {
     }
   };
 
+  async function handle() {
+    const resp = await fetch('/api/examples/pupeteer');
+
+    const videoId = await resp.json();
+
+    setVideoSrc(`/video/${videoId.ID}.mp4`);
+  }
+  console.log(videoSrc);
+
+
   mediaRecorderRef.current?.addEventListener('stop', stopRecording);
 
   return (
@@ -111,6 +120,7 @@ export default function VideoRecorder() {
           </Tooltip>
         </Box>
         <Divider />
+        <Button variant="contained" fullWidth className="mt-5" onClick={handle}>Pupeteer Test</Button>
         <Button variant="contained" onClick={downloadVideo} disabled={!videoSrc} fullWidth className="mt-5">
           <DownloadIcon />&nbsp;
           Download Video
