@@ -4,10 +4,6 @@
     "prettier"
   ],
   "rules": {
-    "indent": [
-      "warning",
-      2
-    ],
     "no-unused-vars": [
       "error",
       {

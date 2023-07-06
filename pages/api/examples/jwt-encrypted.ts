@@ -3,7 +3,7 @@ import { getToken } from "next-auth/jwt";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const secret = process.env.INSTAGRAM_CLIENT_SECRET;
+// const secret = process.env.INSTAGRAM_CLIENT_SECRET;
 
 export default async function handler(
   req: NextApiRequest,

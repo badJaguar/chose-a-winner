@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Image from "next/image";
-import useSWR from 'swr';
+// import useSWR from 'swr';
 import { Post, User } from "../types/Post";
 import noImage from '../public/images/no-img.png';
 import { Comment, CommentUser } from "../types/Comment";
@@ -22,17 +22,17 @@ function filterUniqueComments(comments: Comment[]): Comment[] {
   return uniqueComments;
 }
 
-const url = process.env.NEXT_LAMADAVA_API_URL;
+// const url = process.env.NEXT_LAMADAVA_API_URL;
 
-const opts = {
-  method: 'GET',
-  headers: {
-    'accept': 'application/json',
-    'x-access-key': 'DP2VIFxZ3X07RyhzuOKSC0Zj2qPnbVkm',
-  },
-};
+// const opts = {
+//   method: 'GET',
+//   headers: {
+//     'accept': 'application/json',
+//     'x-access-key': 'DP2VIFxZ3X07RyhzuOKSC0Zj2qPnbVkm',
+//   },
+// };
 
-const fetcher = (apiURL: string) => fetch(apiURL, opts).then(res => res.json());
+// const fetcher = (apiURL: string) => fetch(apiURL, opts).then(res => res.json());
 
 const comments: Comment[][] = [
   [
@@ -167,7 +167,11 @@ const likers: User[] = [
 ];
 
 const ModalPost = ({ post, onClose }: { post: Post; onClose: VoidFunction; }) => {
-  const { id, pk, thumbnail_url } = post ?? {};
+  const {
+    id,
+    //  pk,
+    thumbnail_url
+  } = post ?? {};
 
   const [winner, setWinner] = useState<CommentUser | null>(null);
 

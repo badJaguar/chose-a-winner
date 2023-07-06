@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
-import { GetServerSidePropsContext } from "next";
+import { useState } from "react";
+// import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import Layout from "../components/layout";
-import { getAllMedia } from "../lib/media/getAll";
+// import { getAllMedia } from "../lib/media/getAll";
 import { Post } from "../types/Post";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Caption from "../components/caption";
 import Modal from "../components/modal";
 import noImage from '../public/images/no-img.png';
 import ModalPost from "../components/modal-post";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { Container, Typography, Button } from "@mui/material";
-import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
+// import { getServerSession } from "next-auth";
+// import { authOptions } from "./api/auth/[...nextauth]";
+import { Container, Typography } from "@mui/material";
+// import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 
 const chips = "text-sm md:text-lg inline-block bg-gray-200 rounded-full px-3 py-1 font-semibold text-gray-700 mr-2 mb-2";
 
@@ -223,6 +223,7 @@ export default function Dashboard() {
 
   const { data: session } = useSession();
   const [content, setContent] = useState<Post[]>(posts as Post[]);
+  console.log(setLoading, setContent);
 
   // // Fetch content from protected route
   // useIsomorphicLayoutEffect(() => {

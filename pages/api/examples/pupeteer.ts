@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import puppeteer, { Device } from "puppeteer";
 import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,13 +33,13 @@ export default async function handler(
 
   await page.goto('http://localhost:3000', { waitUntil: "networkidle0" });
   await page.click('#loginSubmit');
-  const id = uuidv4();
-  await recorder.start(`public/video/${id}.mp4`);
+  // const id = uuidv4();
+  await recorder.start(`public/video/winner.mp4`);
 
   await recorder.stop();
   await browser.close();
 
-  res.send({ recorder, ID: id });
+  res.send({ recorder, ID: 'winner' });
 
   return page;
 }

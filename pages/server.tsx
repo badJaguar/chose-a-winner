@@ -9,7 +9,7 @@ export default function ServerSidePage() {
   const { data: session } = useSession();
   // As this page uses Server Side Rendering, the `session` will be already
   // populated on render without needing to go through a loading stage.
-  debugger;
+
   return (
     <Layout>
       <h1>Server Side Rendering</h1>

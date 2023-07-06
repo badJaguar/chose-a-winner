@@ -72,10 +72,13 @@ export default function VideoRecorder() {
 
   async function handle() {
     const resp = await fetch('/api/examples/pupeteer');
-
     const videoId = await resp.json();
 
-    setVideoSrc(`/video/${videoId.ID}.mp4`);
+    setVideoSrc(`video/${videoId.ID}.mp4`);
+    // const respas = await fetch(`/api/readFile?path=${videoId.ID}.mp4`);
+    // const er = await respas.text();
+    // setVideoSrc(er);
+
   }
   console.log(videoSrc);
 
@@ -125,6 +128,7 @@ export default function VideoRecorder() {
           <DownloadIcon />&nbsp;
           Download Video
         </Button>
+        {/* <Button onClick={cl}>File test</Button> */}
       </div>
     </div>
   );
