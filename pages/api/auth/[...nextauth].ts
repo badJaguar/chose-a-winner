@@ -1,35 +1,35 @@
 import NextAuth, { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { InstagramUser } from "../../../types/InstagramUser";
+// import { InstagramUser } from "../../../types/InstagramUser";
 
-const url = process.env.NEXT_API_URL;
-process.env.NEXTAUTH_SECRET;
+// const url = process.env.NEXT_API_URL;
+// process.env.NEXTAUTH_SECRET;
 
-async function getSessionId(credentials: Record<"username" | "password", string> | undefined): Promise<string> {
-  const sessionId = await fetch(`${url}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: `username=${credentials?.username}&password=${credentials?.password}&verification_code=&proxy=&locale=BY&timezone=`
-  });
+// async function getSessionId(credentials: Record<"username" | "password", string> | undefined): Promise<string> {
+//   const sessionId = await fetch(`${url}/auth/login`, {
+//     method: 'POST',
+//     headers: {
+//       'accept': 'application/json',
+//       'Content-Type': 'application/x-www-form-urlencoded'
+//     },
+//     body: `username=${credentials?.username}&password=${credentials?.password}&verification_code=&proxy=&locale=BY&timezone=`
+//   });
 
-  return await sessionId.json();
-}
+//   return await sessionId.json();
+// }
 
-async function getUserInfoByUsername(sessionId: string, userName: string): Promise<InstagramUser> {
-  const user = await fetch(`${url}/user/info_by_username`, {
-    method: 'POST',
-    headers: {
-      'accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: `sessionid=${sessionId}&username=${userName}&use_cache=false`
-  });
+// async function getUserInfoByUsername(sessionId: string, userName: string): Promise<InstagramUser> {
+//   const user = await fetch(`${url}/user/info_by_username`, {
+//     method: 'POST',
+//     headers: {
+//       'accept': 'application/json',
+//       'Content-Type': 'application/x-www-form-urlencoded'
+//     },
+//     body: `sessionid=${sessionId}&username=${userName}&use_cache=false`
+//   });
 
-  return await user.json();
-}
+//   return await user.json();
+// }
 
 
 // For more information on each option (and a full list of options) go to
@@ -53,9 +53,11 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
-        const sessionId = await getSessionId(credentials);
-        const user = await getUserInfoByUsername(sessionId, credentials?.username!);
+      async authorize(
+        // credentials
+      ) {
+        // const sessionId = await getSessionId(credentials);
+        // const user = await getUserInfoByUsername(sessionId, credentials?.username!);
 
         // const defaultUser: User = {
         //   id: user.pk,
@@ -63,15 +65,21 @@ export const authOptions: NextAuthOptions = {
         //   image: user.profile_pic_url,
         //   name: user.username,
         // };
+
+        // TODO: Mock
         const defaultUser: User = {
-          id: user.pk,
-          email: user.public_email,
-          image: user.profile_pic_url,
-          name: user.username,
+          id: 'aasdcsawed',
+          email: 'email',
+          name: 'user.username',
         };
 
-        if (defaultUser && sessionId) {
-          return { ...defaultUser, sessionId };
+        // if (defaultUser && sessionId) {
+        //   return { ...defaultUser, sessionId };
+        // } else {
+        //   return null;
+        // }
+        if (defaultUser) {
+          return defaultUser;
         } else {
           return null;
         }
