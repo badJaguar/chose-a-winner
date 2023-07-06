@@ -17,6 +17,8 @@ export default async function handler(
       hasTouch: true
     }
   };
+
+  // TODO try fix
   const browser = await puppeteer.launch();
 
 
@@ -39,7 +41,6 @@ export default async function handler(
   await recorder.stop();
   await browser.close();
 
-  res.send({ recorder, ID: 'winner' });
-
-  return page;
+  // res.send({ recorder, ID: 'winner' });
+  res.send('winner');
 }
