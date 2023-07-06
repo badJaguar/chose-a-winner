@@ -6,7 +6,7 @@ import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 // import chromium from 'chrome-aws-lambda';
 
 // import { v4 as uuidv4 } from 'uuid';
-import chromium from 'chrome-aws-lambda';
+// import chromium from 'chrome-aws-lambda';
 import puppeteer from 'puppeteer';
 
 
@@ -15,10 +15,7 @@ async function getBrowserInstance() {
   // const executablePath = await chromium.executablePath;
 
   // if (!executablePath) {
-  return puppeteer.launch({
-    args: chromium.args,
-    ignoreHTTPSErrors: true,
-  });
+  return puppeteer.launch();
   // }
 
   // return chromium.puppeteer.launch({
