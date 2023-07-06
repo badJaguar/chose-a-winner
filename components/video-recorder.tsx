@@ -71,7 +71,7 @@ export default function VideoRecorder() {
   };
 
   async function handle() {
-    const resp = await fetch('/api/examples/pupeteer');
+    const resp = await fetch('api/examples/pupeteer');
     const videoId = await resp.json();
 
     setVideoSrc(`video/${videoId.ID}.mp4`);
