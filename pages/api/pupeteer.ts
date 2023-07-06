@@ -1,7 +1,32 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import puppeteer, { Device } from "puppeteer";
+import { Device } from "puppeteer";
 import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
+// import puppeteer from "puppeteer";
+
+// import chromium from 'chrome-aws-lambda';
+
 // import { v4 as uuidv4 } from 'uuid';
+
+async function getBrowserInstance() {
+  const chromium = require('chrome-aws-lambda');
+  const executablePath = await chromium.executablePath;
+
+  if (!executablePath) {
+    const puppeteer = require('puppeteer');
+    return puppeteer.launch({
+      args: chromium.args,
+      ignoreHTTPSErrors: true,
+    });
+  }
+
+  return chromium.puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath,
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+  });
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,8 +44,7 @@ export default async function handler(
   };
 
   // TODO try fix
-  const browser = await puppeteer.launch();
-
+  const browser = await getBrowserInstance();
 
   const page = await browser.newPage();
   // await page.setViewport({
@@ -32,8 +56,8 @@ export default async function handler(
   await page.emulate(pixel5);
   const recorder = new PuppeteerScreenRecorder(page);
 
-
-  await page.goto('http://localhost:3000', { waitUntil: "networkidle0" });
+  const url = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://chose-a-winner.vercel.app/';
+  await page.goto(url, { waitUntil: "networkidle0" });
   await page.click('#loginSubmit');
   // const id = uuidv4();
   await recorder.start(`public/video/winner.mp4`);
@@ -41,6 +65,5 @@ export default async function handler(
   await recorder.stop();
   await browser.close();
 
-  // res.send({ recorder, ID: 'winner' });
-  res.send('winner');
+  res.send({ recorder, ID: 'winner' });
 }
