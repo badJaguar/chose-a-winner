@@ -6,25 +6,25 @@ import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 // import chromium from 'chrome-aws-lambda';
 
 // import { v4 as uuidv4 } from 'uuid';
-// import chromium from 'chrome-aws-lambda';
-import puppeteer from 'puppeteer';
+import chromium from 'chrome-aws-lambda';
+// import puppeteer from 'puppeteer';
 
 
 async function getBrowserInstance() {
 
-  // const executablePath = await chromium.executablePath;
+  const executablePath = await chromium.executablePath;
 
   // if (!executablePath) {
-  return puppeteer.launch();
+  // return puppeteer.launch();
   // }
 
-  // return chromium.puppeteer.launch({
-  //   args: chromium.args,
-  //   defaultViewport: chromium.defaultViewport,
-  //   executablePath,
-  //   headless: chromium.headless,
-  //   ignoreHTTPSErrors: true,
-  // });
+  return chromium.puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath,
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+  });
 }
 
 export default async function handler(
