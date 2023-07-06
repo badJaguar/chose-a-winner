@@ -1,7 +1,10 @@
 {
   "functions": {
     "pages/**/*": {
-      "memory": 128
+      "excludeFiles": [
+        "public/**",
+        "api/**"
+      ]
     }
   }
 }
