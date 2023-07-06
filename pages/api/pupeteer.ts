@@ -6,15 +6,13 @@ import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 // import chromium from 'chrome-aws-lambda';
 
 // import { v4 as uuidv4 } from 'uuid';
-import chromium from 'chrome-aws-lambda';
-import puppeteer from 'puppeteer';
-
 
 async function getBrowserInstance() {
-
+  const chromium = require('chrome-aws-lambda');
   const executablePath = await chromium.executablePath;
 
   if (!executablePath) {
+    const puppeteer = require('puppeteer');
     return puppeteer.launch({
       args: chromium.args,
       ignoreHTTPSErrors: true,
@@ -49,9 +47,14 @@ export default async function handler(
   const browser = await getBrowserInstance();
 
   const page = await browser.newPage();
+  // await page.setViewport({
+  //   width: 414,
+  //   height: 896,
+  //   isMobile: true,
 
+  // });
   await page.emulate(pixel5);
-  const recorder = new PuppeteerScreenRecorder(page as any);
+  const recorder = new PuppeteerScreenRecorder(page);
 
   const url = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://chose-a-winner.vercel.app/';
   await page.goto(url, { waitUntil: "networkidle0" });
@@ -62,5 +65,5 @@ export default async function handler(
   await recorder.stop();
   await browser.close();
 
-  res.send({ recorder, ID: 'winner' });
+  res.send({ url: 'video/winner.mp4' });
 }
