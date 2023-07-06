@@ -23,7 +23,7 @@
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
     "follow-redirects": "^1.15.2",
-    "next": "11.0.2-canary.5",
+    "next": "latest",
     "next-auth": "latest",
     "postcss": "8.4.24",
     "puppeteer": "^20.7.2",
