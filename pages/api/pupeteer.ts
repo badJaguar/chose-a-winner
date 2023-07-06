@@ -6,28 +6,26 @@ import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 // import chromium from 'chrome-aws-lambda';
 
 // import { v4 as uuidv4 } from 'uuid';
-// import chromium from 'chrome-aws-lambda';
-// import puppeteer from 'puppeteer';
+import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer';
 
-const awsExecutablePath = require('chrome-aws-lambda').executablePath;
-const chromiumPuppeteer = require('chrome-aws-lambda').puppeteer;
-const chromiumArgs = require('chrome-aws-lambda').args;
-const chromiumDefaultViewport = require('chrome-aws-lambda').defaultViewport;
-const chromiumHeadless = require('chrome-aws-lambda').headless;
 
 async function getBrowserInstance() {
 
-  const executablePath = await awsExecutablePath;
+  const executablePath = await chromium.executablePath;
 
-  // if (!executablePath) {
-  // return puppeteer.launch();
-  // }
+  if (!executablePath) {
+    return puppeteer.launch({
+      args: chromium.args,
+      ignoreHTTPSErrors: true,
+    });
+  }
 
-  return chromiumPuppeteer.launch({
-    args: chromiumArgs,
-    defaultViewport: chromiumDefaultViewport,
+  return chromium.puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
     executablePath,
-    headless: chromiumHeadless,
+    headless: chromium.headless,
     ignoreHTTPSErrors: true,
   });
 }

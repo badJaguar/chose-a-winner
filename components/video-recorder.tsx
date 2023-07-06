@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import DownloadIcon from '@mui/icons-material/Download';
+// import DownloadIcon from '@mui/icons-material/Download';
 import { useTheme } from '@mui/material/styles';
 
 export default function VideoRecorder() {
@@ -61,25 +61,20 @@ export default function VideoRecorder() {
     setVideoSrc('');
   };
 
-  const downloadVideo = () => {
-    if (videoSrc) {
-      const link = document.createElement('a');
-      link.href = videoSrc;
-      link.download = 'screen_record.webm';
-      link.click();
-    }
-  };
+  // const downloadVideo = () => {
+  //   if (videoSrc) {
+  //     const link = document.createElement('a');
+  //     link.href = videoSrc;
+  //     link.download = 'screen_record.webm';
+  //     link.click();
+  //   }
+  // };
 
   async function handle() {
     const resp = await fetch('/api/pupeteer');
     const videoId = await resp.json();
     setVideoSrc(`video/${videoId.ID}.mp4`);
-    // const respas = await fetch(`/api/readFile?path=${videoId.ID}.mp4`);
-    // const er = await respas.text();
-    // setVideoSrc(er);
-    // debugger;
   }
-  console.log(videoSrc);
 
 
   mediaRecorderRef.current?.addEventListener('stop', stopRecording);
@@ -123,10 +118,10 @@ export default function VideoRecorder() {
         </Box>
         <Divider />
         <Button variant="contained" fullWidth className="mt-5" onClick={handle}>Pupeteer Test</Button>
-        <Button variant="contained" onClick={downloadVideo} disabled={!videoSrc} fullWidth className="mt-5">
+        {/* <Button variant="contained" onClick={downloadVideo} disabled={!videoSrc} fullWidth className="mt-5">
           <DownloadIcon />&nbsp;
           Download Video
-        </Button>
+        </Button> */}
         {/* <Button onClick={cl}>File test</Button> */}
       </div>
     </div>
