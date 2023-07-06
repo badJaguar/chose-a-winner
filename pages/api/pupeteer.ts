@@ -12,22 +12,22 @@ import puppeteer from 'puppeteer';
 
 async function getBrowserInstance() {
 
-  const executablePath = await chromium.executablePath;
+  // const executablePath = await chromium.executablePath;
 
-  if (!executablePath) {
-    return puppeteer.launch({
-      args: chromium.args,
-      ignoreHTTPSErrors: true,
-    });
-  }
-
-  return chromium.puppeteer.launch({
+  // if (!executablePath) {
+  return puppeteer.launch({
     args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath,
-    headless: chromium.headless,
     ignoreHTTPSErrors: true,
   });
+  // }
+
+  // return chromium.puppeteer.launch({
+  //   args: chromium.args,
+  //   defaultViewport: chromium.defaultViewport,
+  //   executablePath,
+  //   headless: chromium.headless,
+  //   ignoreHTTPSErrors: true,
+  // });
 }
 
 export default async function handler(
@@ -49,12 +49,7 @@ export default async function handler(
   const browser = await getBrowserInstance();
 
   const page = await browser.newPage();
-  // await page.setViewport({
-  //   width: 414,
-  //   height: 896,
-  //   isMobile: true,
 
-  // });
   await page.emulate(pixel5);
   const recorder = new PuppeteerScreenRecorder(page as any);
 
