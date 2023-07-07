@@ -4,7 +4,6 @@ import { useState, useRef } from "react";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-// import DownloadIcon from '@mui/icons-material/Download';
 import { useTheme } from '@mui/material/styles';
 
 export default function VideoRecorder() {
@@ -71,7 +70,7 @@ export default function VideoRecorder() {
   // };
 
   async function handle() {
-    setVideoSrc(`${location.origin}/api`);
+    setVideoSrc('http://localhost:3030/api/record-winner');
   }
 
 

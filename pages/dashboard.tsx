@@ -218,12 +218,13 @@ const posts = [
 export default function Dashboard() {
   const [open, setOpen] = useState(false);
   // TODO: Change to true
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [post, setPost] = useState<Post | undefined>();
 
   const { data: session } = useSession();
-  const [content, setContent] = useState<Post[]>(posts as Post[]);
-  console.log(setLoading, setContent);
+  // const [content,
+  //   // setContent
+  // ] = useState<Post[]>(posts as Post[]);
 
   // // Fetch content from protected route
   // useIsomorphicLayoutEffect(() => {
@@ -258,7 +259,10 @@ export default function Dashboard() {
   //   );
   // }
 
-  if (!session && !loading) {
+  if (
+    !session
+    // && !loading
+  ) {
     return (
       <Layout>
         <Typography variant="h2" component="h2">Please login!</Typography>
@@ -270,7 +274,8 @@ export default function Dashboard() {
     <Layout>
       <Container maxWidth="md" className="grid grid-cols-2 lg:grid-cols-3 gap-2 ">
         {
-          !!content.length && content.map(item => (
+          // !!content.length && content.map(item => (
+          !!posts.length && posts.map(item => (
             <div
               onClick={() => openClickHandle(item as Post)}
               key={item.id}

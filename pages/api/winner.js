@@ -35,10 +35,9 @@ const pixel5 = {
 };
 
 
-app.get('/api', async (req, res) => {
+app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'video/mp4');
-  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-
+  // res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
   try {
     const browser = await getBrowserInstance();
 
@@ -52,7 +51,7 @@ app.get('/api', async (req, res) => {
     await page.goto(url, { waitUntil: "networkidle0" });
     await page.click('#loginSubmit');
 
-    await recorder.start(`video/winner.mp4`);
+    await recorder.start(`/video/winner.mp4`);
   
     await recorder.stop();
     await browser.close();
