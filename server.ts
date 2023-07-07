@@ -1,8 +1,7 @@
-import { createServer } from 'http';
-import { parse } from 'url';
+import { parse, UrlWithParsedQuery } from 'url';
 import next from 'next';
 
-import express, { Express } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import puppeteer from 'puppeteer';
 
@@ -24,13 +23,15 @@ const pixel5 = {
 
 
 const port = parseInt(process.env.PORT || '3000', 10);
-const expPort = parseInt(process.env.PORT || '3030', 10);
+// const expPort = parseInt(process.env.PORT || '3030', 10);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
   const server = express();
+  server.use(bodyParser.json());
+  server.use(bodyParser.urlencoded({ extended: true }));
 
   server.get('/api/record-winner', async (req, res) => {
     res.setHeader('Content-Type', 'video/mp4');
@@ -59,25 +60,20 @@ app.prepare().then(() => {
     }
   });
 
-  initRecordServer(server);
-
   // Next server
-  createServer((req, res) => {
-    const parsedUrl = parse(req.url!, true);
-    handle(req, res, parsedUrl);
-  }).listen(port);
-  console.log(
-    `> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV
-    }`
-  );
-});
+  // createServer((req, res) => {
+  //   const parsedUrl = parse(req.url!, true);
+  //   handle(req, res, parsedUrl);
+  // }).listen(port);
+  // console.log(
+  //   `> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV
+  //   }`
+  // );
 
-function initRecordServer(server: Express) {
-  server.use(bodyParser.json());
-  server.use(bodyParser.urlencoded({ extended: true }));
   server.get('*', (req, res) => {
-    return handle(req, res);
+    const parsedUrl: UrlWithParsedQuery = parse(req.url!, true);
+    return handle(req, res, parsedUrl);
   });
 
-  server.listen(expPort);
-}
+  server.listen(port);
+});
