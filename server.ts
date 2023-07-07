@@ -4,7 +4,7 @@ import next from 'next';
 
 import express from 'express';
 import bodyParser from 'body-parser';
-import chromium from 'chrome-aws-lambda';
+// import chromium from 'chrome-aws-lambda';
 import puppeteer from 'puppeteer';
 
 
@@ -12,22 +12,19 @@ import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 
 async function getBrowserInstance() {
 
-  const executablePath = await chromium.executablePath;
+  // const executablePath = await chromium.executablePath;
 
-  if (!executablePath) {
-    return puppeteer.launch({
-      args: chromium.args,
-      ignoreHTTPSErrors: true,
-    });
-  }
+  // if (!executablePath) {
+  return puppeteer.launch();
+  // }
 
-  return chromium.puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath,
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
-  });
+  // return chromium.puppeteer.launch({
+  //   args: chromium.args,
+  //   defaultViewport: chromium.defaultViewport,
+  //   executablePath,
+  //   headless: chromium.headless,
+  //   ignoreHTTPSErrors: true,
+  // });
 }
 
 

@@ -3,7 +3,6 @@ module.exports = {
   reactStrictMode: true,
   experimental: {
     legacyBrowsers: false,
-    outputFileTracingIgnores: ['**chrome-aws-lambda**'],
 },
   images: {
     remotePatterns: [

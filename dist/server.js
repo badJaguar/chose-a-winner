@@ -8,24 +8,21 @@ const url_1 = require("url");
 const next_1 = __importDefault(require("next"));
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
+// import chromium from 'chrome-aws-lambda';
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const puppeteer_screen_recorder_1 = require("puppeteer-screen-recorder");
 async function getBrowserInstance() {
-    const executablePath = await chrome_aws_lambda_1.default.executablePath;
-    if (!executablePath) {
-        return puppeteer_1.default.launch({
-            args: chrome_aws_lambda_1.default.args,
-            ignoreHTTPSErrors: true,
-        });
-    }
-    return chrome_aws_lambda_1.default.puppeteer.launch({
-        args: chrome_aws_lambda_1.default.args,
-        defaultViewport: chrome_aws_lambda_1.default.defaultViewport,
-        executablePath,
-        headless: chrome_aws_lambda_1.default.headless,
-        ignoreHTTPSErrors: true,
-    });
+    // const executablePath = await chromium.executablePath;
+    // if (!executablePath) {
+    return puppeteer_1.default.launch();
+    // }
+    // return chromium.puppeteer.launch({
+    //   args: chromium.args,
+    //   defaultViewport: chromium.defaultViewport,
+    //   executablePath,
+    //   headless: chromium.headless,
+    //   ignoreHTTPSErrors: true,
+    // });
 }
 const pixel5 = {
     userAgent: 'Mozilla/5.0 (Linux; Android 11; Pixel 5 Build/RD1A.201105.003.C1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/87.0.4280.66 Mobile Safari/537.36',
