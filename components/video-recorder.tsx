@@ -70,7 +70,7 @@ export default function VideoRecorder() {
   // };
 
   async function handle() {
-    const url = `/api/record-winner`;
+    const url = `api/record-winners`;
     // const url = `http:localhost:3000/winner`;
     setVideoSrc(url);
   }

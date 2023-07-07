@@ -8,24 +8,21 @@ import bodyParser from 'body-parser';
 import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 
 async function getBrowserInstance() {
-  const chromium = require('chrome-aws-lambda');
-  const executablePath = await chromium.executablePath;
+  // const chromium = require('chrome-aws-lambda');
+  // const executablePath = await chromium.executablePath;
 
   // if (!executablePath) {
-  //   const puppeteer = require('puppeteer');
-  //   return puppeteer.launch({
-  //     args: chromium.args,
-  //     ignoreHTTPSErrors: true,
-  //   });
+  const puppeteer = require('puppeteer');
+  return puppeteer.launch();
   // }
 
-  return chromium.puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath,
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
-  });
+  // return chromium.puppeteer.launch({
+  //   args: chromium.args,
+  //   defaultViewport: chromium.defaultViewport,
+  //   executablePath,
+  //   headless: chromium.headless,
+  //   ignoreHTTPSErrors: true,
+  // });
 }
 
 
@@ -52,9 +49,8 @@ app.prepare().then(() => {
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
 
-  server.get('/api/record-winner', async (req, res) => {
+  server.get('/api/record-winners', async (req, res) => {
     res.setHeader('Content-Type', 'video/mp4');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     try {
       const browser = await getBrowserInstance();
 
