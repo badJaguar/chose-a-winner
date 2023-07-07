@@ -2,35 +2,15 @@ import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';
 
-import express from 'express';
+import express, { Express } from 'express';
 import bodyParser from 'body-parser';
-import chromium from 'chrome-aws-lambda';
 import puppeteer from 'puppeteer';
-
 
 import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 
 async function getBrowserInstance() {
-
-  const executablePath = await chromium.executablePath;
-
-  if (!executablePath) {
-    return puppeteer.launch({
-      args: chromium.args,
-      ignoreHTTPSErrors: true,
-    });
-  }
-
-  return chromium.puppeteer.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath,
-    headless: chromium.headless,
-    ignoreHTTPSErrors: true,
-  });
+  return puppeteer.launch();
 }
-
-
 const pixel5 = {
   userAgent: 'Mozilla/5.0 (Linux; Android 11; Pixel 5 Build/RD1A.201105.003.C1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/87.0.4280.66 Mobile Safari/537.36',
   viewport: {
@@ -44,20 +24,17 @@ const pixel5 = {
 
 
 const port = parseInt(process.env.PORT || '3000', 10);
+const expPort = parseInt(process.env.PORT || '3030', 10);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-
-
 app.prepare().then(() => {
   const server = express();
-  server.use(bodyParser.json());
-  server.use(bodyParser.urlencoded({ extended: true }));
 
   server.get('/api/record-winner', async (req, res) => {
     res.setHeader('Content-Type', 'video/mp4');
-    // res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     try {
       const browser = await getBrowserInstance();
 
@@ -82,19 +59,25 @@ app.prepare().then(() => {
     }
   });
 
-  server.get('*', (req, res) => {
-    return handle(req, res);
-  });
+  initRecordServer(server);
 
-  server.listen(3030);
-
+  // Next server
   createServer((req, res) => {
     const parsedUrl = parse(req.url!, true);
     handle(req, res, parsedUrl);
   }).listen(port);
-
   console.log(
     `> Server listening at http://localhost:${port} as ${dev ? 'development' : process.env.NODE_ENV
     }`
   );
 });
+
+function initRecordServer(server: Express) {
+  server.use(bodyParser.json());
+  server.use(bodyParser.urlencoded({ extended: true }));
+  server.get('*', (req, res) => {
+    return handle(req, res);
+  });
+
+  server.listen(expPort);
+}
