@@ -71,7 +71,7 @@ export default function VideoRecorder() {
   // };
 
   async function handle() {
-    setVideoSrc('http://localhost:3000/api');
+    setVideoSrc(`${location.origin}/api`);
   }
 
 
