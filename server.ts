@@ -3,13 +3,32 @@ import next from 'next';
 
 import express from 'express';
 import bodyParser from 'body-parser';
-import puppeteer from 'puppeteer';
+// import puppeteer from 'puppeteer';
 
 import { PuppeteerScreenRecorder } from "puppeteer-screen-recorder";
 
 async function getBrowserInstance() {
-  return puppeteer.launch();
+  const chromium = require('chrome-aws-lambda');
+  const executablePath = await chromium.executablePath;
+
+  // if (!executablePath) {
+  //   const puppeteer = require('puppeteer');
+  //   return puppeteer.launch({
+  //     args: chromium.args,
+  //     ignoreHTTPSErrors: true,
+  //   });
+  // }
+
+  return chromium.puppeteer.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath,
+    headless: chromium.headless,
+    ignoreHTTPSErrors: true,
+  });
 }
+
+
 const pixel5 = {
   userAgent: 'Mozilla/5.0 (Linux; Android 11; Pixel 5 Build/RD1A.201105.003.C1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/87.0.4280.66 Mobile Safari/537.36',
   viewport: {
